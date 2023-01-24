@@ -1,4 +1,4 @@
-const { request } = require("express");
+const { request, response } = require("express");
 const User = require("./userModels");
 
 exports.createUser = async (request, response) => {
@@ -19,5 +19,17 @@ exports.listUsers = async (request, response) => {
   } catch (error) {
     console.log(error);
     response.status(500).send({ error: error.message });
+  }
+};
+
+exports.login = async (request, response) => {
+  try {
+    response.send({
+      user: request.user.username,
+      text: "Successfully logged in",
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(401).send({ error: error.message });
   }
 };
