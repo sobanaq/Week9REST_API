@@ -1,5 +1,11 @@
 const { Router } = require("express");
-const { createUser, listUsers, login } = require("./userControllers");
+const {
+  createUser,
+  listUsers,
+  login,
+  updateUserEmail,
+  deleteUser,
+} = require("./userControllers");
 const { hashPass, comparePass, tokenCheck } = require("../middleware");
 const userRouter = Router();
 
@@ -7,7 +13,7 @@ userRouter.get("/listUser", listUsers);
 userRouter.get("/listUser", tokenCheck, listUsers);
 userRouter.post("/addUser", hashPass, createUser);
 userRouter.post("/login", comparePass, login);
-//userRouter.get("/UpdateUserEmail", );
-//userRouter.delete("/deleteUser", );
+userRouter.put("/updateUserEmail", tokenCheck, updateUserEmail);
+userRouter.delete("/deleteUser", tokenCheck, deleteUser);
 
 module.exports = userRouter;

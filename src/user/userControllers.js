@@ -43,14 +43,16 @@ exports.login = async (request, response) => {
 
 exports.updateUserEmail = async (request, response) => {
   try {
-    await user.UpdateOne({ user: request.user.username }),
-      { email: request.user.newemailadd };
+    await User.updateOne(
+      { user: request.body.username },
+      { email: request.body.email }
+    );
     response
       .status(200)
       .send({ msg: "You have succesfully updated the email address." });
   } catch (error) {
     console.log(error);
-    response.status(401).send({ error: error.message });
+    response.status(500).send({ error: error.message });
   }
 };
 
@@ -58,12 +60,12 @@ exports.updateUserEmail = async (request, response) => {
 
 exports.deleteUser = async (request, response) => {
   try {
-    await user.deleteOne({ user: request.user.username });
+    await User.deleteOne({ user: request.body.username });
     response.status(200).send({
-      msg: `You have succesfully deleted user ${request.user.username}`,
+      msg: `You have succesfully deleted user ${request.body.username}`,
     });
   } catch (error) {
     console.log(error);
-    response.status(401).send({ error: error.message });
+    response.status(500).send({ error: error.message });
   }
 };
