@@ -4,11 +4,15 @@ const User = require("../user/userModels");
 
 exports.hashPass = async (request, response, next) => {
   try {
-    // take a password out of the body, hash (encrypt) it using bcrypt and then put back the encrypted password to overwrite the unencrypted password and then pass on the updated body to the next function.
+    // take a password out of the body, hash (encrypt) it using bcrypt and then put
+    //back the encrypted password to overwrite the unencrypted password and then
+    // pass on the updated body to the next function.
     const passwordCopy = request.body.password;
     const hashedPass = await bcrypt.hash(passwordCopy, 10);
     console.log(hashedPass);
-    //first parameter of hash is the plain text password to be encrypted, the second parameter is the 'salt' which is the amount of encrypting that is carried out. More salt gives better encryption but takes longer
+    //first parameter of hash is the plain text password to be encrypted, the second
+    //parameter is the 'salt' which is the amount of encrypting that is carried out.
+    //More salt gives better encryption but takes longer
     request.body.password = hashedPass;
     //here we overwrite the unencrypted password with the encrypted version.
     next();
@@ -29,7 +33,7 @@ exports.comparePass = async (request, response, next) => {
       request.user.password
     );
     console.log(passCheck);
-    //This compares the unhashed password in the resquest body to the hashed password we stored in request.user
+    //This compares the unhashed password in the request body to the hashed password we stored in request.user
     if (request.user && passCheck) {
       console.log("username exists and password is correct");
       next();

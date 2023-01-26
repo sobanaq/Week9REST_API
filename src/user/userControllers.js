@@ -1,11 +1,12 @@
 const User = require("./userModels");
 const jwt = require("jsonwebtoken");
 
+//Creating a user -------------------------------------------------------
+
 exports.createUser = async (request, response) => {
   // console.log(request);
   try {
     const newUser = await User.create(request.body);
-    response.status(201).send({ user: newUser });
     const token = jwt.sign({ _id: newUser._id }, process.env.SECRET_KEY);
     response
       .status(201)
@@ -15,6 +16,7 @@ exports.createUser = async (request, response) => {
     response.status(500).send({ error: error.message });
   }
 };
+
 exports.listUsers = async (request, response) => {
   try {
     const users = await User.find({});
@@ -25,10 +27,41 @@ exports.listUsers = async (request, response) => {
   }
 };
 
+//Reading a username -------------------------------------------------------
+
 exports.login = async (request, response) => {
   try {
     const token = jwt.sign({ _id: request.user._id }, process.env.SECRET_KEY);
     response.send({ user: request.user.username, token });
+  } catch (error) {
+    console.log(error);
+    response.status(401).send({ error: error.message });
+  }
+};
+
+//Updating a username -------------------------------------------------------
+
+exports.updateUserEmail = async (request, response) => {
+  try {
+    await user.UpdateOne({ user: request.user.username }),
+      { email: request.user.newemailadd };
+    response
+      .status(200)
+      .send({ msg: "You have succesfully updated the email address." });
+  } catch (error) {
+    console.log(error);
+    response.status(401).send({ error: error.message });
+  }
+};
+
+//Deleting a user -------------------------------------------------------
+
+exports.deleteUser = async (request, response) => {
+  try {
+    await user.deleteOne({ user: request.user.username });
+    response.status(200).send({
+      msg: `You have succesfully deleted user ${request.user.username}`,
+    });
   } catch (error) {
     console.log(error);
     response.status(401).send({ error: error.message });
