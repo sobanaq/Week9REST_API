@@ -15,5 +15,6 @@ userRouter.post("/addUser", hashPass, createUser);
 userRouter.post("/login", comparePass, login);
 userRouter.put("/updateUserEmail", tokenCheck, updateUserEmail);
 userRouter.delete("/deleteUser", tokenCheck, deleteUser);
+userRouter.get("/authCheck", tokenCheck, login);
 
 module.exports = userRouter;
